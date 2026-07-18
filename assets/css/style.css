@@ -1,0 +1,425 @@
+/* ============================================================
+   assets/css/style.css
+   Website Absensi Siswa Berbasis QR Code
+   ============================================================ */
+
+/* ---- CSS Custom Properties ---- */
+:root {
+    --primary:        #1a56db;
+    --primary-dark:   #1141a3;
+    --primary-light:  #e8effd;
+    --secondary:      #0ea5e9;
+    --success:        #16a34a;
+    --warning:        #d97706;
+    --danger:         #dc2626;
+    --info:           #0891b2;
+    --sidebar-w:      260px;
+    --sidebar-bg:     #0f172a;
+    --sidebar-text:   #cbd5e1;
+    --sidebar-active: #1a56db;
+    --topbar-h:       64px;
+    --font:           'Plus Jakarta Sans', sans-serif;
+    --radius:         12px;
+    --shadow:         0 2px 16px rgba(0,0,0,.08);
+    --shadow-md:      0 4px 24px rgba(0,0,0,.12);
+    --transition:     .25s ease;
+}
+
+/* ---- Reset / Base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: var(--font);
+    background:  #f1f5f9;
+    color:       #1e293b;
+    margin:      0;
+    overflow-x:  hidden;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+    position:   fixed;
+    top:        0; left: 0; bottom: 0;
+    width:      var(--sidebar-w);
+    background: var(--sidebar-bg);
+    color:      var(--sidebar-text);
+    display:    flex;
+    flex-direction: column;
+    z-index:    1000;
+    transition: transform var(--transition);
+    overflow-y: auto;
+}
+
+/* Brand logo / nama app */
+.sidebar-brand {
+    display:     flex;
+    align-items: center;
+    padding:     24px 20px;
+    font-size:   1.2rem;
+    font-weight: 700;
+    color:       #fff;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    letter-spacing: -.3px;
+}
+.sidebar-brand i { font-size: 1.5rem; color: var(--secondary); }
+
+/* Navigation */
+.sidebar-nav { flex: 1; padding: 16px 12px; }
+
+.nav-section {
+    font-size:      .65rem;
+    font-weight:    700;
+    letter-spacing: 1px;
+    color:          #475569;
+    padding:        8px 8px 4px;
+    text-transform: uppercase;
+}
+
+.sidebar-nav .nav-link {
+    display:       flex;
+    align-items:   center;
+    gap:           10px;
+    padding:       10px 12px;
+    border-radius: 8px;
+    color:         var(--sidebar-text);
+    font-size:     .875rem;
+    font-weight:   500;
+    transition:    background var(--transition), color var(--transition);
+    margin-bottom: 2px;
+}
+.sidebar-nav .nav-link i { font-size: 1.1rem; width: 20px; }
+.sidebar-nav .nav-link:hover  { background: rgba(255,255,255,.08); color: #fff; }
+.sidebar-nav .nav-link.active { background: var(--primary); color: #fff; }
+
+/* Footer sidebar */
+.sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,.08); }
+
+.user-info {
+    display:     flex;
+    align-items: center;
+    gap:         10px;
+    margin-bottom: 8px;
+}
+.user-avatar {
+    width:       38px;
+    height:      38px;
+    border-radius: 50%;
+    background:  var(--primary);
+    color:       #fff;
+    font-weight: 700;
+    display:     flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.btn-logout {
+    background: rgba(220,38,38,.15);
+    color:      #f87171;
+    border:     none;
+    font-size:  .8rem;
+    padding:    6px 12px;
+    border-radius: 8px;
+    transition: background var(--transition);
+}
+.btn-logout:hover { background: rgba(220,38,38,.3); color: #fca5a5; }
+
+/* ============================================================
+   MAIN WRAPPER & TOPBAR
+   ============================================================ */
+.main-wrapper {
+    margin-left: var(--sidebar-w);
+    min-height:  100vh;
+    transition:  margin-left var(--transition);
+}
+
+.topbar {
+    position:   sticky;
+    top:        0;
+    z-index:    900;
+    height:     var(--topbar-h);
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    display:    flex;
+    align-items: center;
+    padding:    0 24px;
+    gap:        16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+.topbar-title {
+    flex:        1;
+    font-weight: 700;
+    font-size:   1.05rem;
+    color:       #0f172a;
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
+.btn-icon {
+    background: none;
+    border:     none;
+    color:      #475569;
+    padding:    4px 8px;
+    border-radius: 8px;
+    cursor:     pointer;
+    transition: background var(--transition);
+}
+.btn-icon:hover { background: #f1f5f9; }
+
+/* Content area padding */
+.content-area { padding: 24px; }
+
+/* ============================================================
+   CARDS DASHBOARD
+   ============================================================ */
+.stat-card {
+    background:    #fff;
+    border-radius: var(--radius);
+    padding:       24px;
+    box-shadow:    var(--shadow);
+    display:       flex;
+    align-items:   center;
+    gap:           16px;
+    transition:    transform var(--transition), box-shadow var(--transition);
+    border-left:   4px solid transparent;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.stat-card.hadir  { border-color: var(--success); }
+.stat-card.izin   { border-color: var(--warning); }
+.stat-card.sakit  { border-color: var(--info); }
+.stat-card.alpha  { border-color: var(--danger); }
+.stat-card.total  { border-color: var(--primary); }
+
+.stat-icon {
+    width:         56px;
+    height:        56px;
+    border-radius: 12px;
+    display:       flex;
+    align-items:   center;
+    justify-content: center;
+    font-size:     1.6rem;
+    flex-shrink:   0;
+}
+.stat-icon.bg-success-soft { background: #dcfce7; color: var(--success); }
+.stat-icon.bg-warning-soft { background: #fef3c7; color: var(--warning); }
+.stat-icon.bg-info-soft    { background: #cffafe; color: var(--info); }
+.stat-icon.bg-danger-soft  { background: #fee2e2; color: var(--danger); }
+.stat-icon.bg-primary-soft { background: var(--primary-light); color: var(--primary); }
+
+.stat-number {
+    font-size:   2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+.stat-label { font-size: .8rem; color: #64748b; margin-top: 4px; }
+
+/* ============================================================
+   GENERIC CARD
+   ============================================================ */
+.card {
+    border:        none;
+    border-radius: var(--radius);
+    box-shadow:    var(--shadow);
+}
+.card-header {
+    background:    #fff;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: var(--radius) var(--radius) 0 0 !important;
+    padding:       16px 20px;
+    font-weight:   700;
+    display:       flex;
+    align-items:   center;
+    gap:           8px;
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table { margin-bottom: 0; }
+.table thead th {
+    background:  #f8fafc;
+    font-size:   .78rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color:       #475569;
+    border-bottom: 2px solid #e2e8f0;
+    padding:     12px 16px;
+}
+.table tbody td { padding: 12px 16px; vertical-align: middle; font-size: .875rem; }
+.table tbody tr:hover { background: #f8fafc; }
+
+/* ============================================================
+   FORM / INPUT
+   ============================================================ */
+.form-control, .form-select {
+    border-radius: 8px;
+    border:        1px solid #e2e8f0;
+    font-size:     .875rem;
+    padding:       8px 12px;
+    transition:    border var(--transition), box-shadow var(--transition);
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow:   0 0 0 3px rgba(26,86,219,.15);
+}
+.form-label { font-size: .8rem; font-weight: 600; color: #374151; margin-bottom: 4px; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+    border-radius: 8px;
+    font-weight:   600;
+    font-size:     .875rem;
+    padding:       8px 16px;
+    transition:    all var(--transition);
+}
+.btn-primary   { background: var(--primary); border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn-sm { padding: 5px 10px; font-size: .78rem; }
+
+/* ============================================================
+   QR SCAN PAGE
+   ============================================================ */
+.scanner-box {
+    background:    #fff;
+    border-radius: var(--radius);
+    box-shadow:    var(--shadow-md);
+    overflow:      hidden;
+}
+#reader {
+    width:      100% !important;
+    border:     none !important;
+}
+#reader video { border-radius: 0 !important; }
+
+.scan-result-card {
+    background:    #fff;
+    border-radius: var(--radius);
+    padding:       24px;
+    box-shadow:    var(--shadow);
+    animation:     fadeInUp .4s ease;
+}
+.scan-avatar {
+    width:         80px;
+    height:        80px;
+    border-radius: 50%;
+    object-fit:    cover;
+    border:        3px solid var(--primary);
+}
+
+/* ============================================================
+   LOGIN PAGE
+   ============================================================ */
+.login-page {
+    min-height:      100vh;
+    background:      linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a56db 100%);
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+}
+.login-card {
+    background:    #fff;
+    border-radius: 20px;
+    padding:       48px 40px;
+    width:         100%;
+    max-width:     420px;
+    box-shadow:    0 24px 64px rgba(0,0,0,.3);
+    animation:     fadeInUp .5s ease;
+}
+.login-logo {
+    font-size:   2.5rem;
+    color:       var(--primary);
+    margin-bottom: 8px;
+}
+.login-title {
+    font-size:   1.5rem;
+    font-weight: 800;
+    color:       #0f172a;
+}
+
+/* ============================================================
+   BADGE
+   ============================================================ */
+.badge { border-radius: 6px; font-weight: 600; font-size: .72rem; padding: 4px 8px; }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: .6; }
+}
+.animate-fade-in { animation: fadeInUp .4s ease; }
+.pulse { animation: pulse 1.5s infinite; }
+
+/* ============================================================
+   QR CODE IMAGE (preview di tabel siswa)
+   ============================================================ */
+.qr-preview {
+    width:         60px;
+    height:        60px;
+    object-fit:    contain;
+    border-radius: 6px;
+    border:        1px solid #e2e8f0;
+    cursor:        pointer;
+    transition:    transform var(--transition);
+}
+.qr-preview:hover { transform: scale(1.1); }
+
+/* ============================================================
+   RESPONSIVE – Sidebar collapse di mobile
+   ============================================================ */
+@media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main-wrapper { margin-left: 0; }
+    .content-area { padding: 16px; }
+    .stat-number { font-size: 1.5rem; }
+}
+
+/* ============================================================
+   OVERLAY untuk mobile sidebar
+   ============================================================ */
+.sidebar-overlay {
+    display:  none;
+    position: fixed;
+    inset:    0;
+    background: rgba(0,0,0,.5);
+    z-index:  999;
+}
+.sidebar-overlay.show { display: block; }
+
+/* ============================================================
+   SCROLLBAR kustom
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ============================================================
+   FOTO SISWA di modal
+   ============================================================ */
+.foto-siswa {
+    width:         100px;
+    height:        100px;
+    border-radius: 50%;
+    object-fit:    cover;
+    border:        3px solid var(--primary-light);
+}
+
+/* ============================================================
+   PRINT – sembunyikan sidebar & topbar
+   ============================================================ */
+@media print {
+    .sidebar, .topbar, .btn, .no-print { display: none !important; }
+    .main-wrapper { margin-left: 0; }
+    .content-area { padding: 0; }
+}
